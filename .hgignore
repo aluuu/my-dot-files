@@ -1,0 +1,10 @@
+syntax: glob
+xmonad/xmonad-i386-linux
+xmonad/xmonad.hi
+xmonad/xmonad.errors
+xmonad.o
+*.elc
+*~
+_darcs
+.git
+*.dat

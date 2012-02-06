@@ -1,0 +1,8 @@
+[dotfiles]
+repository = ~/workspace/work/my-dot-files
+ignore = [
+    '.hg',
+    '.hgignore',
+    '*.swp',
+    '*.elc']
+externals = {}

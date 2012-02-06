@@ -1,0 +1,11 @@
+[auth]
+bitbucket.prefix = bitbucket.org/
+bitbucket.username = aluuu
+bitbucket.schemes = http https
+
+[ui]
+username = Alexander Dinu <zloy.alu@gmail.com>
+verbose = True
+
+[extensions]
+graphlog =
