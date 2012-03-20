@@ -3,6 +3,7 @@
 ;;   contains tweaks, that doesn't require any packages ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
 ;; backups customization
 (setq backup-directory-alist `((".*" . "~/.emacs.tmp"))
       auto-save-file-name-transforms `((".*" "~/.emacs.tmp" t))
@@ -22,6 +23,8 @@
 ;; correct language switching
 (set-language-environment "UTF-8")
 (set-language-environment-input-method "russian")
+
+(require 'tramp)
 
 ;; identation settings
 (custom-set-variables
@@ -45,13 +48,6 @@
          (or display-time-format
              (if display-time-24hr-format "%H:%M %d-%m-%Y")) now))))
 (display-time-mode 1)
-
-;; show line on 80th column
-(require 'fill-column-indicator)
-(setq fci-rule-width 2)
-(define-globalized-minor-mode global-fci-mode fci-mode
-  (lambda () (fci-mode 1)))
-(global-fci-mode 1)
 
 ;; Using ibuffer-mode instead standard buffer (is part of Emacs>=23)
 (global-unset-key (kbd "C-x b"))

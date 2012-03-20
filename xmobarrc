@@ -1,15 +1,15 @@
-Config { font = "xft:Anonymous Pro-8:normal:antialias=true"
+Config { font = "xft:Andale Mono-8:normal:antialias=true"
        , bgColor = "#fdf6e3"
        , fgColor = "#073642"
-       , position = BottomSize C 100 18
+       , position = BottomSize C 100 20
        , lowerOnStart = True
-       , commands = [ Run StdinReader,
-                      Run Cpu ["-L","3","-H","50","--normal","#385e08","--high","#b22f0e"] 10,
-                      Run Memory ["-t","Mem: <usedratio>%"] 10,
-                      Run Date "%a %_d.%_m.%Y %H:%M" "date" 10,
-                      Run Battery ["-L","10","-H","40","--low","#b22f0e","--normal","#385e08","--high","#268bd2","--minwidth","2","--template","Batt <left>% <timeleft>","--","-O","+","-o","-"] 10
+       , commands = [ Run StdinReader
+--                      Run Cpu ["-L","3","-H","50","--normal","#385e08","--high","#b22f0e"] 10,
+--                      Run Memory ["-t","Mem: <usedratio>%"] 10,
+--                      Run Date "%_d.%_m.%Y %H:%M" "date" 10,
+--                      Run Battery ["-L","10","-H","40","--low","#b22f0e","--normal","#385e08","--high","#268bd2","--minwidth","2","--template","Batt <left>% <timeleft>","--","-O","+","-o","-"] 10
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %cpu% | %memory% | %battery% | <fc=#268bd2>%date%</fc>              "
+       , template = "%StdinReader%"
        }

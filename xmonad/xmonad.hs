@@ -7,15 +7,17 @@
 --
 -- Normally, you'd only override those defaults you care about.
 --
+import Control.Exception
+import Data.Ratio ((%))
+import Control.Monad (filterM)
 import Data.Monoid
 import System.Exit
 import System.IO (hPutStrLn)
 import Graphics.X11.ExtraTypes.XF86
 import qualified Data.Map        as M
+
 import XMonad.Layout.IM
 import XMonad.Layout.Grid
-import Data.Ratio ((%))
-import Control.Monad (filterM)
 import XMonad
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
@@ -24,8 +26,16 @@ import XMonad.Actions.CycleWS
 import qualified XMonad.StackSet as W
 import XMonad.Layout.Reflect
 import XMonad.Layout.LayoutModifier
-
+import XMonad.Layout.PerWorkspace
 import XMonad.Util.WindowProperties
+import XMonad.Util.Loggers
+
+
+myShorten :: Int -> String -> String
+myShorten n xs | length xs < n = xs
+               | otherwise     = take (n - length end) xs ++ end
+ where
+    end = "~"
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
@@ -94,11 +104,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch sonata
     , ((modm,               xK_a     ), spawn $ "sonata")
 
-    -- launch google chrome
-    , ((modm,               xK_c     ), spawn $ "google-chrome")
-
     -- launch firefox
-    , ((modm,               xK_f     ), spawn $ "firefox")
+    , ((modm,               xK_c     ), spawn $ "firefox-bin")
 
     -- launch thunar
     , ((modm,               xK_t     ), spawn $ "thunar")
@@ -276,19 +283,20 @@ imLayout = avoidStruts $ reflectHoriz $ withIMs ratio rosters chatLayout where
     pidginRoster    = And (ClassName "Pidgin") (Role "buddy_list")
     skypeRoster     = (ClassName "Skype") `And` (Not (Title "Options")) `And` (Not (Role "Chats")) `And` (Not (Role "CallWindowForm"))
 
-myLayout =  tiled ||| Mirror tiled ||| Full ||| imLayout
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
+gimpLayout = withIM (0.11) (Role "gimp-toolbox") $
+             reflectHoriz $
+             withIM (0.15) (Role "gimp-dock") Full
 
-     -- The default number of windows in the master pane
-     nmaster = 1
-
-     -- Default proportion of screen occupied by master pane
-     ratio   = 1/2
-
-     -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+myLayout = onWorkspace "web" Full $  -- layout l1 will be used on workspace "foo".
+           onWorkspace "im" imLayout $  -- layout l2 will be used on workspaces "bar" and "6".
+           onWorkspace "8" gimpLayout $
+           tiled ||| Mirror tiled ||| Full
+               where
+                 -- default tiling algorithm partitions the screen into two panes
+                 tiled   = Tall nmaster delta ratio
+                 nmaster = 1
+                 ratio   = 1/2
+                 delta   = 3/100
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -306,13 +314,13 @@ myLayout =  tiled ||| Mirror tiled ||| Full ||| imLayout
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-               [resource  =? "desktop_window" --> doIgnore
-               , className =? "stalonetray"    --> doIgnore
-               , className =? "Pidgin"            --> doF (W.shift "im")
-               , className =? "google-chrome"    --> doF (W.shift "web")
-               , className =? "Sonata"      --> doF (W.shift "audio")
-               , className =? "Emacs"          --> doF (W.shift "code")
-               ]
+               [resource  =? "desktop_window" --> doIgnore,
+                className =? "xfce4-notifyd" --> doIgnore,
+                className =? "Pidgin" --> doF (W.shift "im"),
+                className =? "google-chrome" --> doF (W.shift "web"),
+                className =? "Firefox" --> doF (W.shift "web"),
+                className =? "Sonata" --> doF (W.shift "audio"),
+                className =? "Emacs" --> doF (W.shift "code")]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -346,20 +354,33 @@ myLogHook = return ()
 --
 -- By default, do nothing.
 myStartupHook = do
-  spawn "trayer --edge bottom --align right --height 18 --padding 1 --widthtype request --transparent false --tint 0x#fdf6e3 --alpha 0"
-  spawn "nm-applet"
-  spawn "xxkb"
-  spawn "~/.dropbox-dist/dropboxd'"
+  spawn "pkill nm-applet"
+  spawn "pkill xxkb"
+  spawn "trayer --edge bottom --align right --height 18 --padding 1 --widthtype request"
   spawn "setxkbmap -model evdev -layout us,ru -option lv3:ralt_switch,grp:caps_toggle,misc:typo,grp_led:caps"
   spawn "xsetroot -cursor_name left_ptr"
+  spawn "nm-applet"
+  spawn "xxkb"
 
 -- Command to launch the bar.
 myBar = "xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppCurrent = xmobarColor "#b58900" "" . wrap "" "*"
-                , ppHiddenNoWindows = xmobarColor "#000000" "" . wrap "" ""
-                , ppTitle   = xmobarColor "#b58900"  "" . shorten 40}
+myPP = xmobarPP { ppCurrent = xmobarColor "#cb4b16" "" . wrap "(" ")",
+                  ppUrgent = xmobarColor "#cb4b16" "" . wrap "*" "*",
+                  ppHidden = xmobarColor "#268bd2" "" . wrap "" "",
+                  ppHiddenNoWindows = xmobarColor "#002b36" "" . wrap "" "",
+                  ppSep = " | ",
+                  ppWsSep = " ",
+                  ppLayout = xmobarColor "#268bd2" "" . myShorten 6,
+                  ppOrder = id,
+                  ppTitle = xmobarColor "#268bd2"  "" . myShorten 20,
+                  ppExtras = [
+                   xmobarColorL "#dc322f" "" dateLogger,
+                   xmobarColorL "#268bd2" "" battery
+                  ]}
+       where
+         dateLogger = date "%d.%m.%Y %H:%M"
 
 -- Key binding to toggle the gap for the bar.
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
@@ -392,5 +413,4 @@ myConfig = defaultConfig {
 -- Now run xmonad with all the defaults we set up.
 
 -- The main function.
-main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
---    xmobar <- spawnPipe "xmobar"
+main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig --    xmobar <- spawnPipe "xmobar"

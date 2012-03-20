@@ -21,15 +21,16 @@
 
 ;; font settings
 (set-default-font "-unknown-Anonymous Pro-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1")
-
+(global-linum-mode 1)
 (require 'color-theme)
+
 ;; (require 'color-theme-solarized)
 ;; (color-theme-solarized-dark)
 ;; (set-face-foreground 'tabbar-default "#657b83")
 ;; (set-face-background 'tabbar-default "#002b36")
 ;; (set-face-foreground 'tabbar-selected "#586e75")
 ;; (set-face-bold-p 'tabbar-selected nil)
-;;(set-face-attribute 'tabbar-button nil :box '(:line-width 1 :color "#002b36")))
+;; (set-face-attribute 'tabbar-button nil :box '(:line-width 1 :color "#002b36"))
 
 (require 'color-theme-solarized)
 (color-theme-solarized-light)
