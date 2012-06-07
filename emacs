@@ -8,22 +8,14 @@
 (add-to-list 'load-path "~/.emacs.d/contrib/haskell-mode")
 (add-to-list 'load-path "~/.emacs.d/contrib/emacs-w3m")
 (add-to-list 'load-path "~/.emacs.d/contrib/twittering-mode")
+(add-to-list 'load-path "~/.emacs.d/contrib/tomorrow-theme")
 
 (load-file "/home/aluuu/.emacs.d/conf.d/base.el")
 (load-file "/home/aluuu/.emacs.d/conf.d/appearance.el")
-;; (load-file "/home/aluuu/.emacs.d/conf.d/auto-complete.el")
+(load-file "/home/aluuu/.emacs.d/conf.d/auto-complete.el")
 (load-file "/home/aluuu/.emacs.d/conf.d/lisp.el")
 (load-file "/home/aluuu/.emacs.d/conf.d/flymake.el")
 (load-file "/home/aluuu/.emacs.d/conf.d/haskell.el")
-(require 'twittering-mode)
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
-(require 'ipython)
-(require 'anything)
-(require 'anything-config)
-(require 'anything-match-plugin)
-(require 'anything-ipython)
-(require 'anything-show-completion)
-(use-anything-show-completion 'anything-ipython-complete
-                              '(length initial-pattern))

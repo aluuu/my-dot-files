@@ -159,11 +159,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Swap the focused window and the master window
     , ((modm .|. shiftMask, xK_Return), windows W.swapMaster)
 
-    -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
+    -- -- Swap the focused window with the next window
+    -- , ((modm .|. shiftMask, xK_j     ), windows W.swapDown)
 
-    -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+    -- -- Swap the focused window with the previous window
+    -- , ((modm .|. shiftMask, xK_k     ), windows W.swapUp)
 
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
@@ -188,6 +188,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Quit xmonad
     , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
 
+    , ((modm .|. shiftMask, xK_k), nextScreen)
+
+    , ((modm .|. shiftMask, xK_l),  prevScreen)
+
     -- Restart xmonad
     , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
     ]
@@ -205,6 +209,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,               xK_Right),  nextWS)
     , ((modm,               xK_Left),    prevWS)
     ]
+
+
     --
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
@@ -317,8 +323,8 @@ myManageHook = composeAll
                [resource  =? "desktop_window" --> doIgnore,
                 className =? "xfce4-notifyd" --> doIgnore,
                 className =? "Pidgin" --> doF (W.shift "im"),
-                className =? "google-chrome" --> doF (W.shift "web"),
                 className =? "Firefox" --> doF (W.shift "web"),
+                className =? "Google-chrome" --> doF (W.shift "web"),
                 className =? "Sonata" --> doF (W.shift "audio"),
                 className =? "Emacs" --> doF (W.shift "code")]
 
@@ -354,30 +360,29 @@ myLogHook = return ()
 --
 -- By default, do nothing.
 myStartupHook = do
-  spawn "pkill nm-applet"
-  spawn "pkill xxkb"
-  spawn "trayer --edge bottom --align right --height 18 --padding 1 --widthtype request"
+  spawn "/home/aluuu/.screenlayout/work.sh"
+  spawn "pkill trayer || trayer --edge top --align right --height 20 --padding 1 --widthtype percent --width 10 --transparent true --tint 0x1d1f21"
   spawn "setxkbmap -model evdev -layout us,ru -option lv3:ralt_switch,grp:caps_toggle,misc:typo,grp_led:caps"
   spawn "xsetroot -cursor_name left_ptr"
-  spawn "nm-applet"
-  spawn "xxkb"
+  spawn "pkill nm-applet || nm-applet"
+  spawn "pkill xxkb || xxkb"
 
 -- Command to launch the bar.
 myBar = "xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppCurrent = xmobarColor "#cb4b16" "" . wrap "(" ")",
-                  ppUrgent = xmobarColor "#cb4b16" "" . wrap "*" "*",
-                  ppHidden = xmobarColor "#268bd2" "" . wrap "" "",
-                  ppHiddenNoWindows = xmobarColor "#002b36" "" . wrap "" "",
+myPP = xmobarPP { ppCurrent = xmobarColor "#f0c674" "" . wrap "(" ")",
+                  ppUrgent = xmobarColor "#cc6666" "" . wrap "*" "*",
+                  ppHidden = xmobarColor "#b294bb" "" . wrap "" "",
+                  ppHiddenNoWindows = xmobarColor "#373b41" "" . wrap "" "",
                   ppSep = " | ",
                   ppWsSep = " ",
-                  ppLayout = xmobarColor "#268bd2" "" . myShorten 6,
+                  ppLayout = xmobarColor "#f0c674" "" . myShorten 6,
                   ppOrder = id,
-                  ppTitle = xmobarColor "#268bd2"  "" . myShorten 20,
+                  ppTitle = xmobarColor "#f0c674"  "" . myShorten 20,
                   ppExtras = [
-                   xmobarColorL "#dc322f" "" dateLogger,
-                   xmobarColorL "#268bd2" "" battery
+                   xmobarColorL "#f0c674" "" dateLogger,
+                   xmobarColorL "#f0c674" "" battery
                   ]}
        where
          dateLogger = date "%d.%m.%Y %H:%M"
