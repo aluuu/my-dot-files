@@ -27,15 +27,13 @@
 (require 'tramp)
 
 ;; identation settings
-(custom-set-variables
- '(indent-tabs-mode nil))
-(add-hook
- 'write-file-hooks
- (lambda ()
-   ;; automatic untabify all files while saving
-   (if (not indent-tabs-mode)
-       (untabify (point-min) (point-max)))))
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
+;; (add-hook
+;;  'write-file-hooks
+;;  (lambda ()
+;;    ;; automatic untabify all files while saving
+;;    (if (not indent-tabs-mode)
+;;        (untabify (point-min) (point-max)))))
+;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; date and time display settings
 (setq display-time-24hr-format t)
@@ -60,13 +58,9 @@
 (require 'ido)
 (ido-mode)
 
-;; TODO: need to place org-mode to contrib
-;; ;; org-mode
-;; (require 'org-install)
-;; (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-;; (define-key global-map "\C-cl" 'org-store-link)
-;; (define-key global-map "\C-ca" 'org-agenda)
-;; (setq org-log-done t)
+;; org-mode
+(require 'org-install)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
 ;; mercurial-mode
 (require 'mercurial)
@@ -82,5 +76,5 @@
 (add-hook 'lisp-mode-hook #'highlight-parentheses-mode 1)
 (add-hook 'python-mode-hook #'highlight-parentheses-mode 1)
 (add-hook 'emacs-lisp-mode-hook #'highlight-parentheses-mode 1)
-
+(add-to-list 'auto-mode-alist '("\\.emacs$" . lisp-mode))
 (server-start)

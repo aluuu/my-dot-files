@@ -1,18 +1,20 @@
-PATH="/usr/lib/cache/bin:/usr/lib/distcc/bin:${PATH}"
+PATH="/home/aluuu/bin:/usr/lib/cache/bin:${PATH}"
 export PATH=${PATH}
+export MPD_HOST=localhost
+export MPD_PORT=6600
 export CCACHE_DIR=/var/tmp/ccache
 export DISTCC_DIR=/tmp/distcc
 export HISTFILE=~/.zsh_history
 export HISTSIZE=50000
 export SAVEHIST=50000
-eval `dircolors -b`
+export TERM=screen-256color
+eval `dircolors ~/.dircolors.256dark`
 autoload -Uz compinit && compinit
 autoload -U promptinit && promptinit
 autoload -U colors && colors
-
-prompt_aluuu_prompt=${1:-'blue'}
-prompt_aluuu_user=${2:-'blue'}
-prompt_aluuu_root=${3:-'blue'}
+prompt_aluuu_prompt=${1:-'red'}
+prompt_aluuu_user=${2:-'red'}
+prompt_aluuu_root=${3:-'red'}
 base_prompt="<%B%F{$prompt_aluuu_user}%n%b> in "
 post_prompt="%b%f%k"
 path_prompt="[%B%F{$prompt_aluuu_prompt}%1~%b]"
@@ -42,6 +44,7 @@ zstyle ':completion:*' hosts off
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh/cache
 zstyle :compinstall filename '/home/aluuu/.zshrc'
+zstyle ':completion::complete:*' use-cache 1
 
 bindkey "\e[3~" delete-char # del
 bindkey "^[[1;5D" backward-word # ctrl+left

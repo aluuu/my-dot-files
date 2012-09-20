@@ -8,3 +8,7 @@ xmonad.o
 _darcs
 .git
 *.dat
+emacs.d/contrib
+emacs.d/elpa
+emacs.d/tramp
+emacs.d/url/cookies

@@ -1,17 +1,17 @@
-Config { font = "xft:Andale Mono-8:normal:antialias=true"
-       , border = NoBorder
-       , borderColor = "#000000"
-       , bgColor = "#1d1f21"
-       , fgColor = "#f0c674"
-       , position = TopSize L 90 20
-       , lowerOnStart = True
-       , commands = [ Run StdinReader,
-                      Run Cpu ["-L","3","-H","50","--normal","#f0c674","--high","#cc6666"] 10,
-                      Run Memory ["-t","Mem: <usedratio>%"] 10
---                      Run Date "%_d.%_m.%Y %H:%M" "date" 10,
---                      Run Battery ["-L","10","-H","40","--low","#cc6666","--normal","#f0c674","--high","#b5bd68","--minwidth","2","--template","Batt <left>% <timeleft>","--","-O","+","-o","-"] 10
-                    ]
-       , sepChar = "%"
-       , alignSep = "}{"
-       , template = "%StdinReader% | <fc=#f0c674>%cpu%</fc> | <fc=#f0c674>%memory%</fc>"
-       }
+Config {
+  font = "xft:Andale Mono-8:normal:antialias=true",
+  border = NoBorder,
+  borderColor = "#000000",
+  bgColor = "#1d1f21",
+  fgColor = "#f0c674",
+  position = TopSize L 94 20,
+  lowerOnStart = True,
+  commands = [
+    Run StdinReader,
+    Run Cpu ["-L","3","-H","50","--normal","#f0c674","--high","#cc6666"] 10,
+    Run Memory ["-t","Mem: <usedratio>%"] 10
+    ],
+  sepChar = "%",
+  alignSep = "}{",
+  template = "%StdinReader% | <fc=#f0c674>%cpu%</fc> | <fc=#f0c674>%memory%</fc>"
+  }

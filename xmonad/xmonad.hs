@@ -80,7 +80,7 @@ myNumlockMask   = mod2Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["web", "code", "term", "im", "5", "6", "7", "8", "audio"]
+myWorkspaces    = ["web", "code", "term", "im", "5", "6", "7", "8", "9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -96,7 +96,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm,               xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_r     ), spawn $ "dmenu_run -i -p 'Run command:' -nb '#eee8d5' -nf '#839496' -sb '#fdf6e3' -sf '#268bd2'")
+    , ((modm,               xK_r     ), spawn $ "dmenu_run -i -p 'Run command:' -nb '#1d1f21' -nf '#f0c674' -sb '#373b41' -sf '#f0c674'")
 
     -- launch emacs
     , ((modm,               xK_e     ), spawn $ "emacs")
@@ -361,7 +361,7 @@ myLogHook = return ()
 -- By default, do nothing.
 myStartupHook = do
   spawn "/home/aluuu/.screenlayout/work.sh"
-  spawn "pkill trayer || trayer --edge top --align right --height 20 --padding 1 --widthtype percent --width 10 --transparent true --tint 0x1d1f21"
+  spawn "pkill trayer || trayer --edge top --align right --height 20 --padding 1 --widthtype percent --width 7 --transparent true --alpha 0 --tint 0x1d1f21"
   spawn "setxkbmap -model evdev -layout us,ru -option lv3:ralt_switch,grp:caps_toggle,misc:typo,grp_led:caps"
   spawn "xsetroot -cursor_name left_ptr"
   spawn "pkill nm-applet || nm-applet"
@@ -379,13 +379,16 @@ myPP = xmobarPP { ppCurrent = xmobarColor "#f0c674" "" . wrap "(" ")",
                   ppWsSep = " ",
                   ppLayout = xmobarColor "#f0c674" "" . myShorten 6,
                   ppOrder = id,
-                  ppTitle = xmobarColor "#f0c674"  "" . myShorten 20,
+                  ppTitle = xmobarColor "#f0c674"  "" . myShorten 0,
                   ppExtras = [
                    xmobarColorL "#f0c674" "" dateLogger,
                    xmobarColorL "#f0c674" "" battery
+                   -- ,
+                   -- xmobarColorL "#f0c674" "" mpcLogger
                   ]}
        where
-         dateLogger = date "%d.%m.%Y %H:%M"
+         dateLogger = date "%d.%m.%y %H:%M"
+         -- mpcLogger = logCmd "mpc status | head -n 1"
 
 -- Key binding to toggle the gap for the bar.
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)

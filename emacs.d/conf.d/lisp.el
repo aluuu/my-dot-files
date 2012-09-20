@@ -2,11 +2,10 @@
 (require 'highlight-symbol)
 (setq highlight-symbol-idle-delay 1)
 
-(defun my-lisp-mode-hook ()
+(defun aluuu/lisp-mode-hook ()
   (hs-minor-mode 1)
-  ;; (paredit-mode 1)
   (highlight-symbol-mode)
-  (slime-mode)
+  (slime-mode 1)
   (setq highlight-symbol-face '((:underline t)))
   (custom-set-faces '(highlight-symbol-face ((((class color) (background dark)) (:background "yellow"))))))
 
@@ -20,6 +19,7 @@
      (custom-set-variables
       '(slime-complete-symbol*-fancy t)
       '(slime-net-coding-system 'utf-8-unix)
-      '(slime-lisp-implementations '((sbcl ("/home/aluuu/bin/sbcl") :coding-system utf-8-unix))))))
+      '(slime-lisp-implementations '((sbcl ("/home/aluuu/bin/sbcl") :coding-system utf-8-unix)
+                                     (cljs ("/home/aluuu/bin/browser-repl") :coding-system utf-8-unix))))))
 
-(add-hook 'lisp-mode-hook #'my-lisp-mode-hook 1)
+(add-hook 'lisp-mode-hook #'aluuu/lisp-mode-hook 1)
