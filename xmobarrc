@@ -2,16 +2,16 @@ Config {
   font = "xft:Andale Mono-8:normal:antialias=true",
   border = NoBorder,
   borderColor = "#000000",
-  bgColor = "#1d1f21",
-  fgColor = "#f0c674",
-  position = TopSize L 94 20,
+  bgColor = "#fdf6e3",
+  fgColor = "#002b36",
+  position = BottomSize L 100 20,
   lowerOnStart = True,
   commands = [
     Run StdinReader,
-    Run Cpu ["-L","3","-H","50","--normal","#f0c674","--high","#cc6666"] 10,
+    Run Cpu ["-L","3","-H","50","--normal","#859900","--high","#d33682"] 10,
     Run Memory ["-t","Mem: <usedratio>%"] 10
     ],
   sepChar = "%",
   alignSep = "}{",
-  template = "%StdinReader% | <fc=#f0c674>%cpu%</fc> | <fc=#f0c674>%memory%</fc>"
+  template = "%StdinReader% | <fc=#002b36>%cpu%</fc> | <fc=#002b36>%memory%</fc>"
   }

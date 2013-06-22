@@ -29,7 +29,10 @@ import XMonad.Layout.LayoutModifier
 import XMonad.Layout.PerWorkspace
 import XMonad.Util.WindowProperties
 import XMonad.Util.Loggers
-
+import XMonad.Layout.OneBig
+import XMonad.Layout.Circle
+import XMonad.Layout.DragPane
+import XMonad.Layout.Dishes
 
 myShorten :: Int -> String -> String
 myShorten n xs | length xs < n = xs
@@ -47,7 +50,7 @@ myFocusFollowsMouse = True
 
 -- Width of the window border in pixels.
 --
-myBorderWidth   = 1
+myBorderWidth   = 2
 
 -- modMask lets you specify which modkey you want to use. The default
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -80,12 +83,12 @@ myNumlockMask   = mod2Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["web", "code", "term", "im", "5", "6", "7", "8", "9"]
+myWorkspaces    = ["web", "code", "term", "im", "remote_1", "remote_2", "remote_3", "misc", "audio"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#dddddd"
-myFocusedBorderColor = "#268bd2"
+myNormalBorderColor  = "#6c71c4"
+myFocusedBorderColor = "#859900"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -201,10 +204,21 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     --
+    -- [((m .|. modm, k), windows $ onCurrentScreen f i)
+    --      | (i, k) <- zip (workspaces' conf) [xK_1 .. xK_9]
+    --      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-     ++
+
+    -- ++
+
+    -- -- mod-shift-{w,e,r} %! Move client to screen 1, 2, or 3
+    -- [((m .|. modm, k), screenWorkspace sc >>= flip whenJust (windows . f))
+    --     | (k, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+    --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
+    ++
 
     [ ((modm,               xK_Right),  nextWS)
     , ((modm,               xK_Left),    prevWS)
@@ -226,15 +240,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- mod-button1, Set the window to floating mode and move by dragging
-    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
-                                       >> windows W.shiftMaster))
+    [
+    -- ((modm, button1), (\w -> focus w >> mouseMoveWindow w
+    --                                        >> windows W.shiftMaster))
 
     -- mod-button2, Raise the window to the top of the stack
-    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
+    -- , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
 
-    -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
-                                       >> windows W.shiftMaster))
+    -- -- mod-button3, Set the window to floating mode and resize by dragging
+    -- , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
+    --                                    >> windows W.shiftMaster))
 
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
@@ -293,12 +308,11 @@ gimpLayout = withIM (0.11) (Role "gimp-toolbox") $
              reflectHoriz $
              withIM (0.15) (Role "gimp-dock") Full
 
-myLayout = onWorkspace "web" Full $  -- layout l1 will be used on workspace "foo".
-           onWorkspace "im" imLayout $  -- layout l2 will be used on workspaces "bar" and "6".
+myLayout = onWorkspace "web" Full $
+           onWorkspace "im" imLayout $
            onWorkspace "8" gimpLayout $
-           tiled ||| Mirror tiled ||| Full
+           tiled ||| Mirror tiled ||| Full ||| OneBig (1/2) (1/2) ||| Circle ||| dragPane Horizontal 0.1 0.5 ||| Dishes 2 (1/6)
                where
-                 -- default tiling algorithm partitions the screen into two panes
                  tiled   = Tall nmaster delta ratio
                  nmaster = 1
                  ratio   = 1/2
@@ -321,12 +335,15 @@ myLayout = onWorkspace "web" Full $  -- layout l1 will be used on workspace "foo
 --
 myManageHook = composeAll
                [resource  =? "desktop_window" --> doIgnore,
+                className  =? "Plasma" --> doIgnore,
+                className  =? "plasma-desktop" --> doIgnore,
                 className =? "xfce4-notifyd" --> doIgnore,
                 className =? "Pidgin" --> doF (W.shift "im"),
                 className =? "Firefox" --> doF (W.shift "web"),
-                className =? "Google-chrome" --> doF (W.shift "web"),
+                className =? "Chromium-browser" --> doF (W.shift "web"),
                 className =? "Sonata" --> doF (W.shift "audio"),
-                className =? "Emacs" --> doF (W.shift "code")]
+                className =? "Emacs" --> doF (W.shift "code"),
+                className =? "Subl" --> doF (W.shift "code")]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -360,29 +377,32 @@ myLogHook = return ()
 --
 -- By default, do nothing.
 myStartupHook = do
-  spawn "/home/aluuu/.screenlayout/work.sh"
-  spawn "pkill trayer || trayer --edge top --align right --height 20 --padding 1 --widthtype percent --width 7 --transparent true --alpha 0 --tint 0x1d1f21"
+  spawn "/home/aluuu/.screenlayout/home.sh"
+  spawn "pkill trayer-srg || trayer-srg --monitor 1 --edge bottom --align right --height 20 --padding 1 --widthtype percent --width 7 --transparent true --alpha 0 --tint 0xfdf6e3"
   spawn "setxkbmap -model evdev -layout us,ru -option lv3:ralt_switch,grp:caps_toggle,misc:typo,grp_led:caps"
-  spawn "xsetroot -cursor_name left_ptr"
-  spawn "pkill nm-applet || nm-applet"
   spawn "pkill xxkb || xxkb"
+  spawn "xsetroot -cursor_name left_ptr -solid \"#81a2be\""
+  spawn "pkill nm-applet || nm-applet"
+  spawn "pkill blueman-applet || blueman-applet"
+  spawn "xset b off"
+  spawn "pkill redshift || pkill gtk-redshift || gtk-redshift -l 43.39:79.23 -t 4600:5600 -g 0.8 -m vidmode -v"
 
 -- Command to launch the bar.
-myBar = "xmobar"
+myBar = "xmobar --screen 1"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppCurrent = xmobarColor "#f0c674" "" . wrap "(" ")",
-                  ppUrgent = xmobarColor "#cc6666" "" . wrap "*" "*",
-                  ppHidden = xmobarColor "#b294bb" "" . wrap "" "",
+myPP = xmobarPP { ppCurrent = xmobarColor "#d33682" "" . wrap "<" ">",
+                  ppUrgent = xmobarColor "#d33682" "" . wrap "*" "*",
+                  ppHidden = xmobarColor "#002b36" "" . wrap "(" ")",
                   ppHiddenNoWindows = xmobarColor "#373b41" "" . wrap "" "",
                   ppSep = " | ",
-                  ppWsSep = " ",
-                  ppLayout = xmobarColor "#f0c674" "" . myShorten 6,
+                  ppWsSep = "-",
+                  ppLayout = xmobarColor "#002b36" "" . myShorten 6,
                   ppOrder = id,
-                  ppTitle = xmobarColor "#f0c674"  "" . myShorten 0,
+                  ppTitle = xmobarColor "#002b36"  "" . myShorten 0,
                   ppExtras = [
-                   xmobarColorL "#f0c674" "" dateLogger,
-                   xmobarColorL "#f0c674" "" battery
+                   xmobarColorL "#002b36" "" dateLogger,
+                   xmobarColorL "#002b36" "" battery
                    -- ,
                    -- xmobarColorL "#f0c674" "" mpcLogger
                   ]}
@@ -400,7 +420,7 @@ myConfig = defaultConfig {
         focusFollowsMouse  = myFocusFollowsMouse,
         borderWidth        = myBorderWidth,
         modMask            = myModMask,
-        numlockMask        = myNumlockMask,
+        -- numlockMask        = myNumlockMask,
         workspaces         = myWorkspaces,
         normalBorderColor  = myNormalBorderColor,
         focusedBorderColor = myFocusedBorderColor,

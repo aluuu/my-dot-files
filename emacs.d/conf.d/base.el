@@ -26,15 +26,6 @@
 
 (require 'tramp)
 
-;; identation settings
-;; (add-hook
-;;  'write-file-hooks
-;;  (lambda ()
-;;    ;; automatic untabify all files while saving
-;;    (if (not indent-tabs-mode)
-;;        (untabify (point-min) (point-max)))))
-;; (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
 ;; date and time display settings
 (setq display-time-24hr-format t)
 (setq display-time-string-forms
@@ -62,19 +53,23 @@
 (require 'org-install)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 
-;; mercurial-mode
-(require 'mercurial)
-
 ;; lambda mode
-(require 'lambda-mode)
-(add-hook 'lisp-mode-hook #'lambda-mode 1)
-(add-hook 'python-mode-hook #'lambda-mode 1)
-(add-hook 'emacs-lisp-mode-hook #'lambda-mode 1)
+(require 'pretty-lambdada)
+(add-hook 'lisp-mode-hook #'pretty-lambda-mode 1)
+(add-hook 'python-mode-hook #'pretty-lambda-mode 1)
+(add-hook 'emacs-lisp-mode-hook #'pretty-lambda-mode 1)
+(add-hook 'clojure-mode-hook #'pretty-lambda-mode 1)
 
 ;; highlighting parentheses
 (require 'highlight-parentheses)
 (add-hook 'lisp-mode-hook #'highlight-parentheses-mode 1)
+(add-hook 'clojure-mode-hook #'highlight-parentheses-mode 1)
 (add-hook 'python-mode-hook #'highlight-parentheses-mode 1)
 (add-hook 'emacs-lisp-mode-hook #'highlight-parentheses-mode 1)
+
 (add-to-list 'auto-mode-alist '("\\.emacs$" . lisp-mode))
+(add-to-list 'auto-mode-alist '("\\emacs$" . lisp-mode))
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (server-start)

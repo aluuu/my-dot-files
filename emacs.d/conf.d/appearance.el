@@ -4,11 +4,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (global-linum-mode 1)
 (global-hl-line-mode 1)
-(set-default-font "-unknown-Anonymous Pro-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+(set-default-font "-unknown-Anonymous Pro-normal-normal-normal-1-15-*-*-*-m-0-iso10646-1")
 
 (require 'tabbar)
 (tabbar-mode)
-(set-face-font 'tabbar-default "-unknown-Anonymous Pro-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1")
+(set-face-font 'tabbar-default "-unknown-Anonymous Pro-normal-normal-normal-1-15-*-*-*-m-0-iso10646-1")
 
 (defun aluuu/choose-theme (name)
   (cond ((eq name `solarized-dark)
@@ -27,18 +27,19 @@
          (set-face-attribute 'tabbar-button nil :box '(:line-width 1 :color "#073642")))
         ((eq name `gruber)
          (color-theme-gruber-darker))
-        ((eq name `tomorrow) 
+        ((eq name `tomorrow-bright)
+         (color-theme-sanityinc-tomorrow-bright)
+         (set-face-foreground 'tabbar-default "#c5c8c6")
+         (set-face-background 'tabbar-default "#1d1f21")
+         (set-face-foreground 'tabbar-selected "#8abeb7")
+         (set-face-attribute 'tabbar-button nil :box '(:line-width 1 :color "#1d1f21")))
+        ((eq name `tomorrow)
          (color-theme-sanityinc-tomorrow-night)
          (set-face-foreground 'tabbar-default "#c5c8c6")
          (set-face-background 'tabbar-default "#1d1f21")
          (set-face-foreground 'tabbar-selected "#8abeb7")
          (set-face-attribute 'tabbar-button nil :box '(:line-width 1 :color "#1d1f21")))))
 
-(aluuu/choose-theme `tomorrow)
+(aluuu/choose-theme `tomorrow-bright)
 
-;; (setq tabbar-ruler-global-tabbar 't) 
 (setq tabbar-ruler-global-ruler 't)
-;; (setq tabbar-ruler-popup-menu 't) 
-;; (setq tabbar-ruler-popup-toolbar 't)
-
-

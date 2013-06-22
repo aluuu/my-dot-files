@@ -1,4 +1,4 @@
-PATH="/home/aluuu/bin:/usr/lib/cache/bin:${PATH}"
+PATH="/opt/sencha/command:/opt/sencha:/opt/sencha/appbuilder:/opt/sencha/jsbuilder:/home/aluuu/bin:/usr/lib/cache/bin:${PATH}"
 export PATH=${PATH}
 export MPD_HOST=localhost
 export MPD_PORT=6600
@@ -7,20 +7,22 @@ export DISTCC_DIR=/tmp/distcc
 export HISTFILE=~/.zsh_history
 export HISTSIZE=50000
 export SAVEHIST=50000
+export EDITOR=nano
 export TERM=screen-256color
 eval `dircolors ~/.dircolors.256dark`
 autoload -Uz compinit && compinit
 autoload -U promptinit && promptinit
 autoload -U colors && colors
-prompt_aluuu_prompt=${1:-'red'}
-prompt_aluuu_user=${2:-'red'}
+
+prompt_aluuu_prompt=${1:-'yellow'}
+prompt_aluuu_user=${2:-'yellow'}
 prompt_aluuu_root=${3:-'red'}
 base_prompt="<%B%F{$prompt_aluuu_user}%n%b> in "
 post_prompt="%b%f%k"
 path_prompt="[%B%F{$prompt_aluuu_prompt}%1~%b]"
 if [ "$USER" = 'root' ]
   then
-    PS1="$base_prompt$path_prompt %F{red}!# $post_prompt"
+    PS1="$base_prompt$path_prompt %F{red}!!!!# $post_prompt"
   else
     PS1="$base_prompt$path_prompt $ $post_prompt"
   fi
