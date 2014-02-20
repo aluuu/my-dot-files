@@ -1,62 +1,52 @@
-PATH="/opt/sencha/command:/opt/sencha:/opt/sencha/appbuilder:/opt/sencha/jsbuilder:/home/aluuu/bin:/usr/lib/cache/bin:${PATH}"
-export PATH=${PATH}
-export MPD_HOST=localhost
-export MPD_PORT=6600
-export CCACHE_DIR=/var/tmp/ccache
-export DISTCC_DIR=/tmp/distcc
-export HISTFILE=~/.zsh_history
-export HISTSIZE=50000
-export SAVEHIST=50000
-export EDITOR=nano
-export TERM=screen-256color
-eval `dircolors ~/.dircolors.256dark`
-autoload -Uz compinit && compinit
-autoload -U promptinit && promptinit
-autoload -U colors && colors
+# Path to your oh-my-zsh configuration.
+ZSH=$HOME/.oh-my-zsh
 
-prompt_aluuu_prompt=${1:-'yellow'}
-prompt_aluuu_user=${2:-'yellow'}
-prompt_aluuu_root=${3:-'red'}
-base_prompt="<%B%F{$prompt_aluuu_user}%n%b> in "
-post_prompt="%b%f%k"
-path_prompt="[%B%F{$prompt_aluuu_prompt}%1~%b]"
-if [ "$USER" = 'root' ]
-  then
-    PS1="$base_prompt$path_prompt %F{red}!!!!# $post_prompt"
-  else
-    PS1="$base_prompt$path_prompt $ $post_prompt"
-  fi
-PS2="$base_prompt$path_prompt > $post_prompt"
-PS3="$base_prompt$path_prompt ?# $post_prompt"
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="robbyrussell"
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
 
-if [[ "$TERM" == "dumb" ]]
-then
-    prompt gentoo
-fi
+# Set to this to use case-sensitive completion
+# CASE_SENSITIVE="true"
 
-autoload -U select-word-style
-select-word-style bash
+# Comment this out to disable bi-weekly auto-update checks
+# DISABLE_AUTO_UPDATE="true"
 
-zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
-zstyle ':completion:*' list-colors ''
-zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
-zstyle ':completion:*' matcher-list 'r:|[._-]=** r:|=**'
-zstyle ':completion:*' verbose true
-zstyle ':completion:*' hosts off
-zstyle ':completion:*' use-cache on
-zstyle ':completion:*' cache-path ~/.zsh/cache
-zstyle :compinstall filename '/home/aluuu/.zshrc'
-zstyle ':completion::complete:*' use-cache 1
+# Uncomment to change how often before auto-updates occur? (in days)
+# export UPDATE_ZSH_DAYS=13
 
-bindkey "\e[3~" delete-char # del
-bindkey "^[[1;5D" backward-word # ctrl+left
-bindkey "^[[1;5C" forward-word #ctrl+right
-bindkey "^[[A" history-search-backward # up
-bindkey "^[[B" history-search-forward # down
-bindkey "^[OH" beginning-of-line # home
-bindkey "^[OF" end-of-line # end
-bindkey "\e[6~" end-of-history # PageDown
+# Uncomment following line if you want to disable colors in ls
+# DISABLE_LS_COLORS="true"
 
-alias grep='grep -EHn --color'
-alias ls='ls -al --color=auto'
-alias unmerge='emerge --unmerge'
+# Uncomment following line if you want to disable autosetting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment following line if you want to disable command autocorrection
+# DISABLE_CORRECTION="true"
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment following line if you want to disable marking untracked files under
+# VCS as dirty. This makes repository status check for large repositories much,
+# much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(git)
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# Customize to your needs...
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.3:/home/aluuu/.local/bin:/home/aluuu/.rvm/bin
+export SBCL_HOME=/usr/lib/sbcl
+export WORDCHARS=''
+bindkey '^[0C' forward-word
+bindkey '^[0D' backward-word
+bindkey -e
