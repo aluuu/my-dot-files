@@ -14,7 +14,6 @@ color =
 progress =
 mq =
 hgext.churn=
-prompt = ~/.hgplugins/hg-prompt/prompt.py
 record =
 
 [alias]
