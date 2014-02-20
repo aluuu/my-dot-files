@@ -1,7 +1,8 @@
 syntax: glob
-xmonad/xmonad-i386-linux
+xmonad/xmonad-*-linux
 xmonad/xmonad.hi
 xmonad/xmonad.errors
+xmonad/*.old
 xmonad.o
 *.elc
 *~
