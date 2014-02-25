@@ -19,7 +19,8 @@
             (add-hook hook mode))
           hooks))
 
-(defun aluuu/untabify
+(defun aluuu/untabify ()
+  (interactive)
   (if (not indent-tabs-mode) (untabify (point-min) (point-max))))
 
 (aluuu/check-packages
@@ -66,7 +67,7 @@
  ;; If there is more than one, they won't work right.
  '(auto-save-file-name-transforms (quote ((".*" "/tmp/emacs\\1" t))))
  '(backup-directory-alist (quote ((".*" . "~/tmp/emacs"))))
- '(before-save-hook (quote (delete-trailing-whitespace) (aluuu/untabify)))
+ '(before-save-hook (quote (delete-trailing-whitespace aluuu/untabify)))
  '(blink-cursor-mode nil)
  '(column-number-mode t)
  '(custom-enabled-themes (quote (wombat)))
