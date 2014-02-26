@@ -52,7 +52,7 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (display-time-mode 1)
-(whitespace-mode 0)
+(global-whitespace-mode)
 (paredit-mode 1)
 (multi-web-global-mode 1)
 
@@ -86,7 +86,8 @@
  '(mweb-tags (quote ((tpl-mode "{%|{{" "}}|%}") (php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>") (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>") (css-mode "<style +type=\"text/css\"[^>]*>" "</style>"))))
  '(show-paren-mode t)
  '(slime-repl-history-size 1000)
- '(tool-bar-mode nil))
+ '(tool-bar-mode nil)
+ '(whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark))))
 '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
 
 (custom-set-faces
@@ -95,4 +96,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 97 :width normal :foundry "paratype" :family "PT Mono"))))
- '(mode-line ((t (:background "black" :foreground "#f6f3e8")))))
+ '(mode-line ((t (:background "black" :foreground "#f6f3e8"))))
+ '(whitespace-newline ((t (:foreground "dim gray" :weight normal))))
+ '(whitespace-space ((t (:foreground "gray25")))))
