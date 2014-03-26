@@ -15,6 +15,7 @@ progress =
 mq =
 hgext.churn=
 record =
+hggit =
 
 [alias]
 blame = annotate --user --number
