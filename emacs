@@ -32,7 +32,9 @@
   'haskell-mode
   'color-theme
   'color-theme-sanityinc-tomorrow
-  'yaml-mode))
+  'yaml-mode
+  'smex
+  'js2-mode))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -59,6 +61,7 @@
 (ido-mode 1)
 (global-set-key (kbd "C-s-SPC") 'aluuu/mode-line-in-header)
 (global-set-key (kbd "C-x b") 'ibuffer)
+(global-set-key (kbd "M-x") 'smex)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
