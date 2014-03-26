@@ -1,13 +1,13 @@
 [user]
-        name = aluuu
-        email = aluuu@husa.su
+	name = aluuu
+	email = aluuu@husa.su
 [push]
-        default = simple
+	default = simple
 [core]
-        autocrlf = false
+	autocrlf = false
 [credential]
-        helper = cache --timeout 3600
+	helper = cache --timeout 3600
 [alias]
-        ci = commit
-        st = status
-        glog = log --graph
+	ci = commit
+	st = status
+	glog = log --graph
