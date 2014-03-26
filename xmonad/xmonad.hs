@@ -47,14 +47,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
    ((modm              , xK_period), sendMessage (IncMasterN (-1))),
    ((modm              , xK_b     ), sendMessage ToggleStruts),
    ((modm .|. shiftMask, xK_q), spawn "xfce4-session-logout")
-  ]
-
-++
+  ] ++
   [((m .|. modm, k), windows $ f i)
        | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9],
-   (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+   (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]] ++
 
-++
   [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..],
    (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
