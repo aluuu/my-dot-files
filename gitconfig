@@ -1,12 +1,12 @@
 [user]
-	name = aluuu
-	email = zloy.alu@gmail.com
+        name = aluuu
+        email = aluuu@husa.su
 [push]
-	default = simple
+        default = simple
 [core]
-	autocrlf = false
+        autocrlf = false
 [credential]
-	helper = cache --timeout 3600
+        helper = cache --timeout 3600
 [alias]
         ci = commit
         st = status
