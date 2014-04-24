@@ -34,7 +34,8 @@
   'color-theme-sanityinc-tomorrow
   'yaml-mode
   'smex
-  'js2-mode))
+  'js2-mode
+  'epa))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -57,6 +58,7 @@
 (global-whitespace-mode)
 (paredit-mode 1)
 (multi-web-global-mode 1)
+(epa-file-enable)
 
 (ido-mode 1)
 (global-set-key (kbd "C-s-SPC") 'aluuu/mode-line-in-header)
