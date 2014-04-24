@@ -44,7 +44,7 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.3:/home/aluuu/.local/bin:/home/aluuu/.rvm/bin
+export PATH=$PATH:/usr/local/bin:/usr/bin:/bin:/opt/bin:/usr/x86_64-pc-linux-gnu/gcc-bin/4.6.3:/home/aluuu/.local/bin:/home/aluuu/bin:/home/aluuu/.rvm/bin
 export SBCL_HOME=/usr/lib/sbcl
 export WORDCHARS=''
 bindkey '^[0C' forward-word
