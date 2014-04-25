@@ -3,6 +3,7 @@ repository = ~/workspace/work/my-dot-files
 ignore = [
     '.hg',
     '.hgignore',
+    '.git',
     '*.swp',
     '*.elc']
 externals = {}
