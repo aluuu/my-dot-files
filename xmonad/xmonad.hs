@@ -71,6 +71,14 @@ myLayout = tiled ||| Mirror tiled ||| Full
       ratio   = 1/2
       delta   = 3/100
 
+myManageHook = composeAll
+   [ className =? "emacs" --> doShift "2"
+   , className =? "Google-chrome-beta" --> doShift "1"
+   , className =? "Pidgin" --> doShift "4"
+   , className =? "Xmessage" --> doFloat
+   , manageDocks
+   ]
+
 main = xmonad defaults
 
 defaults = xfceConfig {
@@ -82,6 +90,7 @@ defaults = xfceConfig {
              workspaces = myWorkspaces,
              normalBorderColor = myNormalBorderColor,
              focusedBorderColor = myFocusedBorderColor,
+             manageHook = myManageHook <+> manageHook defaultConfig,
              keys = myKeys,
              mouseBindings = myMouseBindings
            }
