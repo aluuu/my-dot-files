@@ -2,7 +2,7 @@
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
                          ("marmalade" . "http://marmalade-repo.org/packages/")))
 (add-to-list 'load-path "~/.emacs.d/elpa/")
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
+;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
 
 (make-directory "/tmp/emacs/" t)
 (package-initialize)
@@ -35,7 +35,8 @@
   'yaml-mode
   'smex
   'js2-mode
-  'epa))
+  'epa
+  'magit))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -92,6 +93,7 @@
  '(show-paren-mode t)
  '(slime-repl-history-size 1000)
  '(tool-bar-mode nil)
+ '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark))))
 '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
 
@@ -104,3 +106,29 @@
  '(mode-line ((t (:background "black" :foreground "#f6f3e8"))))
  '(whitespace-newline ((t (:foreground "dim gray" :weight normal))))
  '(whitespace-space ((t (:foreground "gray25")))))
+
+(setq org-publish-project-alist
+           '(("notes"
+              :base-directory "~/notes/"
+              :publishing-directory "~/notes/build"
+              :section-numbers nil
+              :table-of-contents nil
+              :style "<link rel=\"stylesheet\"
+                     href=\"style.css\"
+                     type=\"text/css\"/>")))
+
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+               ("dired" (mode . dired-mode))
+               ("js" (mode . js2-mode))
+               ("python" (mode . python-mode))
+               ("git" (mode . magit-mode))
+               ("org" (mode . org-mode))
+               ("emacs" (or
+                         (name . "emacs")
+                         (name . "^\\*scratch\\*$")
+                         (name . "^\\*Messages\\*$")))))))
+
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (ibuffer-switch-to-saved-filter-groups "default")))
