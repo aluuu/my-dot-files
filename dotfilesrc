@@ -1,5 +1,5 @@
 [dotfiles]
-repository = ~/workspace/work/my-dot-files
+repository = ~/workspace/my-dot-files
 ignore = [
     '.hg',
     '.hgignore',
