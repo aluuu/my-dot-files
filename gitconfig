@@ -5,6 +5,7 @@
 	default = simple
 [core]
 	autocrlf = false
+	editor = emacsclient
 [credential]
 	helper = cache --timeout 3600
 [alias]

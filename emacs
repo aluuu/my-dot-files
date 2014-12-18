@@ -1,6 +1,7 @@
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")))
+                         ("marmalade" . "http://marmalade-repo.org/packages/")
+                         ("melpa" . "http://melpa.milkbox.net/packages/")))
 (add-to-list 'load-path "~/.emacs.d/elpa/")
 ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
 
@@ -36,7 +37,10 @@
   'smex
   'js2-mode
   'epa
-  'magit))
+  'magit
+  'tuareg
+  'emmet-mode
+  'jsx-mode))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -60,6 +64,7 @@
 (paredit-mode 1)
 (multi-web-global-mode 1)
 (epa-file-enable)
+(server-mode)
 
 (ido-mode 1)
 (global-set-key (kbd "C-s-SPC") 'aluuu/mode-line-in-header)
@@ -87,6 +92,7 @@
  '(ido-everywhere t)
  '(indent-tabs-mode nil)
  '(inferior-lisp-program "sbcl")
+ '(multi-web-global-mode t nil (multi-web-mode))
  '(mweb-default-major-mode (quote html-mode))
  '(mweb-filename-extensions (quote ("php" "htm" "html" "ctp" "phtml" "php4" "php5")))
  '(mweb-tags (quote ((tpl-mode "{%|{{" "}}|%}") (php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>") (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>") (css-mode "<style +type=\"text/css\"[^>]*>" "</style>"))))
@@ -104,8 +110,47 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#242424" :foreground "#f6f3e8" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 97 :width normal :foundry "paratype" :family "PT Mono"))))
  '(mode-line ((t (:background "black" :foreground "#f6f3e8"))))
+ '(web-mode-current-column-highlight-face ((t nil)))
+ '(web-mode-whitespace-face ((t (:foreground "gray25"))))
  '(whitespace-newline ((t (:foreground "dim gray" :weight normal))))
  '(whitespace-space ((t (:foreground "gray25")))))
+
+(add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
+(add-to-list 'auto-mode-alist '("emacs$" . list-mode))
+
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "js")
+      (let ((web-mode-enable-part-face nil))
+        ad-do-it)
+    ad-do-it))
+
+(setq ibuffer-saved-filter-groups
+      (quote (("default"
+               ("dired" (mode . dired-mode))
+               ("css" (or (name . "\\.css$")
+                         (mode . css-mode)))
+               ("js" (or (name . "[\\.js|\\.jsx]$")
+                         (mode . js2-mode)
+                         (mode . js-mode)))
+               ("ocaml" (or (name . "\\.ml$")
+                            (name . "^_oasis$")))
+               ("ocaml interface" (name . "\\.mli$"))
+               ("make" (or (mode . makefile-gmake-mode)
+                           (mode . makefile-mode)))
+               ("yaml" (mode . yaml-mode))
+               ("python" (mode . python-mode))
+               ("git" (or (mode . magit-mode)
+                          (name . "^\\*magit")))
+               ("org" (mode . org-mode))
+               ("emacs" (or
+                         (name . "^emacs$")
+                         (name . "^\\.emacs$")
+                         (name . "^\\*scratch\\*$")
+                         (name . "^\\*Messages\\*$")))))))
+
+(add-hook 'ibuffer-mode-hook
+          (lambda ()
+            (ibuffer-switch-to-saved-filter-groups "default")))
 
 (setq org-publish-project-alist
            '(("notes"
@@ -116,19 +161,3 @@
               :style "<link rel=\"stylesheet\"
                      href=\"style.css\"
                      type=\"text/css\"/>")))
-
-(setq ibuffer-saved-filter-groups
-      (quote (("default"
-               ("dired" (mode . dired-mode))
-               ("js" (mode . js2-mode))
-               ("python" (mode . python-mode))
-               ("git" (mode . magit-mode))
-               ("org" (mode . org-mode))
-               ("emacs" (or
-                         (name . "emacs")
-                         (name . "^\\*scratch\\*$")
-                         (name . "^\\*Messages\\*$")))))))
-
-(add-hook 'ibuffer-mode-hook
-          (lambda ()
-            (ibuffer-switch-to-saved-filter-groups "default")))
