@@ -20,12 +20,23 @@
             (add-hook hook mode))
           hooks))
 
+(defun aluuu/ocaml-run-tests ()
+  ;; TODO: copy user's environment before `make` execution.
+  ;;       maybe, this action should be made not only for this function,
+  ;;       but for `emacs` process in general
+  (let ((closest-makefile (get-closest-pathname)))
+    (set (make-local-variable 'compile-command)
+         (format "make -f %s test -C %s"
+                 closest-makefile
+                 (file-name-directory closest-makefile)))))
+
 (defun aluuu/untabify ()
   (interactive)
   (if (not indent-tabs-mode) (untabify (point-min) (point-max))))
 
 (aluuu/check-packages
  (list
+  'compile
   'uniquify
   'multi-web-mode
   'paredit
@@ -51,6 +62,21 @@
    lisp-interaction-mode-hook
    scheme-mode-hook
    clojure-mode-hook))
+
+(defun* get-closest-pathname (&optional (file "Makefile"))
+  "Determine the pathname of the first instance of FILE starting from the current directory towards root.
+This may not do the correct thing in presence of links. If it does not find FILE, then it shall return the name
+of FILE in the current directory, suitable for creation
+  Source: http://www.emacswiki.org/emacs/CompileCommand"
+  (let ((root (expand-file-name "/")))
+    (expand-file-name
+     file
+     (loop
+      for d = default-directory then (expand-file-name ".." d)
+      if (file-exists-p (expand-file-name file d))
+      return d
+      if (equal d root)
+      return nil))))
 
 (blink-cursor-mode 0)
 (setq initial-scratch-message "")
@@ -109,7 +135,7 @@
  '(vc-annotate-color-map (quote ((20 . "#c82829") (40 . "#f5871f") (60 . "#eab700") (80 . "#718c00") (100 . "#3e999f") (120 . "#4271ae") (140 . "#8959a8") (160 . "#c82829") (180 . "#f5871f") (200 . "#eab700") (220 . "#718c00") (240 . "#3e999f") (260 . "#4271ae") (280 . "#8959a8") (300 . "#c82829") (320 . "#f5871f") (340 . "#eab700") (360 . "#718c00"))))
  '(vc-annotate-very-old-color nil)
  '(whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark))))
- '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
+'(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -135,7 +161,7 @@
       (quote (("default"
                ("dired" (mode . dired-mode))
                ("css" (or (name . "\\.css\\'")
-                         (mode . css-mode)))
+                          (mode . css-mode)))
                ("js" (or (name . "\\.js\\'")
                          (mode . js2-mode)
                          (mode . js-mode)))
@@ -159,14 +185,15 @@
 (add-hook 'ibuffer-mode-hook
           (lambda ()
             (ibuffer-switch-to-saved-filter-groups "default")))
+(add-hook 'tuareg-mode-hook 'aluuu/ocaml-run-tests)
 
 (setq org-publish-project-alist
-           '(("notes"
-              :base-directory "~/notes/"
-              :publishing-directory "~/notes/build"
-              :section-numbers nil
-              :table-of-contents nil
-              :style "<link rel=\"stylesheet\"
+      '(("notes"
+         :base-directory "~/notes/"
+         :publishing-directory "~/notes/build"
+         :section-numbers nil
+         :table-of-contents nil
+         :style "<link rel=\"stylesheet\"
                      href=\"style.css\"
                      type=\"text/css\"/>")))
 
