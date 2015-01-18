@@ -23,6 +23,7 @@ fi
 # check if EC2 API tools are installed
 if [[ -d $HOME/ec2/bin ]]; then
    export PATH="$HOME/ec2/bin:$PATH"
+   export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre/ # TODO: remove hardcoded jre path
 fi
 
 export PATH="$HOME/.bin:$PATH"
