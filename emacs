@@ -200,3 +200,4 @@ of FILE in the current directory, suitable for creation
 ;; Agda support
 ;; (load-file (let ((coding-system-for-read 'utf-8))
 ;;                 (shell-command-to-string "agda-mode locate")))
+(autoload 'forward-whitespace "thingatpt" nil t)
