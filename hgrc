@@ -4,7 +4,7 @@ bitbucket.username = aluuu
 bitbucket.schemes = http https
 
 [ui]
-username = Alexander Dinu <zloy.alu@gmail.com>
+username = Alexander Dinu <aluuu@husa.su>
 verbose = True
 editor = emacsclient
 

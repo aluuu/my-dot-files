@@ -1,14 +1,14 @@
 [user]
-	name = aluuu
-	email = aluuu@husa.su
+        name = Alexander Dinu
+        email = aluuu@husa.su
 [push]
-	default = simple
+        default = simple
 [core]
-	autocrlf = false
-	editor = emacsclient
+        autocrlf = false
+        editor = emacsclient
 [credential]
-	helper = cache --timeout 3600
+        helper = cache --timeout 3600
 [alias]
-	ci = commit
-	st = status
-	glog = log --graph
+        ci = commit
+        st = status
+        glog = log --graph
