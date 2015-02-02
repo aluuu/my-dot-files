@@ -27,5 +27,10 @@ if [[ -d $HOME/ec2/bin ]]; then
    export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre/ # TODO: remove hardcoded jre path
 fi
 
+# check if rbenv is installed
+if [[ -d $HOME/.rbenv/ ]]; then
+   eval "$(rbenv init -)"
+fi
+
 export PATH="$HOME/.bin:$PATH"
 export EDITOR=emacsclient
