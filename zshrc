@@ -1,7 +1,7 @@
 if [[ -a $HOME/.oh-my-zsh ]]; then
     export ZSH=$HOME/.oh-my-zsh
     ZSH_THEME="ys"
-    plugins=(git)
+    plugins=(git rails ruby)
     source $ZSH/oh-my-zsh.sh
 fi
 
@@ -34,3 +34,5 @@ fi
 
 export PATH="$HOME/.bin:$PATH"
 export EDITOR=emacsclient
+
+alias gem=gem || rbenv rehash
