@@ -32,7 +32,12 @@ if [[ -d $HOME/.rbenv/ ]]; then
    eval "$(rbenv init -)"
 fi
 
+# ruby-related aliases
+alias gem=gem || rbenv rehash
+
+# ansible aliases
+alias ave='ansible-vault edit --vault-password-file .vault_pass'
+alias avv='ansible-vault view --vault-password-file .vault_pass'
+
 export PATH="$HOME/.bin:$PATH"
 export EDITOR=emacsclient
-
-alias gem=gem || rbenv rehash
