@@ -28,7 +28,7 @@ if [[ -d $HOME/ec2/bin ]]; then
 fi
 
 # check if rbenv is installed
-if [[ -d $HOME/.rbenv/ ]]; then
+if [[ -d $HOME/.rbenv/ && -x `which rbenv` ]]; then
    eval "$(rbenv init -)"
 fi
 
