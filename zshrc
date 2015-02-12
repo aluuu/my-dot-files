@@ -38,6 +38,7 @@ alias gem=gem || rbenv rehash
 # ansible aliases
 alias ave='ansible-vault edit --vault-password-file .vault_pass'
 alias avv='ansible-vault view --vault-password-file .vault_pass'
+alias ec=emacsclient
 
 export PATH="$HOME/.bin:$PATH"
 export EDITOR=emacsclient
