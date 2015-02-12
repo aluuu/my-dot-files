@@ -51,7 +51,8 @@
   'magit
   'tuareg
   'emmet-mode
-  'jsx-mode))
+  'jsx-mode
+  'markdown-mode))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
