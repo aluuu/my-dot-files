@@ -1,6 +1,6 @@
 if [[ -a $HOME/.oh-my-zsh ]]; then
     export ZSH=$HOME/.oh-my-zsh
-    ZSH_THEME="ys"
+    ZSH_THEME="lambda"
     plugins=(git rails ruby)
     source $ZSH/oh-my-zsh.sh
 fi
