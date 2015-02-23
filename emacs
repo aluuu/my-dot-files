@@ -44,6 +44,7 @@
   'haskell-mode
   'color-theme
   'color-theme-sanityinc-solarized
+  'color-theme-sanityinc-tomorrow
   'yaml-mode
   'smex
   'js2-mode
@@ -112,16 +113,16 @@ of FILE in the current directory, suitable for creation
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
-   (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
+   (vector "#eaeaea" "#d54e53" "#b9ca4a" "#e7c547" "#7aa6da" "#c397d8" "#70c0b1" "#000000"))
  '(auto-save-file-name-transforms (quote ((".*" "/tmp/emacs\\1" t))))
  '(backup-directory-alist (quote ((".*" . "~/tmp/emacs"))))
  '(before-save-hook (quote (delete-trailing-whitespace aluuu/untabify)))
  '(blink-cursor-mode nil)
  '(column-number-mode t)
- '(custom-enabled-themes (quote (sanityinc-solarized-light)))
+ '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
-    ("4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" default)))
+    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default)))
  '(display-time-default-load-average nil)
  '(display-time-format "%H:%M %d.%m.%Y")
  '(display-time-mode t)
@@ -180,12 +181,10 @@ of FILE in the current directory, suitable for creation
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#fdf6e3" :foreground "#657b83" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 120 :width normal :foundry "nil" :family "PT Mono"))))
- '(mode-line ((t (:background "black" :foreground "#f6f3e8"))))
- '(web-mode-current-column-highlight-face ((t nil)) t)
- '(web-mode-whitespace-face ((t (:foreground "gray25"))) t)
- '(whitespace-newline ((t (:foreground "light gray"))))
- '(whitespace-space ((t (:foreground "gainsboro")))))
+ '(default ((t (:slant normal :weight normal :height 120 :width normal :foundry "nil" :family "PT Mono"))))
+ '(whitespace-newline ((t (:foreground "#444444" :background "#1d1f21"))))
+ '(whitespace-space ((t (:foreground "#444444" :background "#1d1f21")))))
+
 
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 
@@ -242,3 +241,9 @@ of FILE in the current directory, suitable for creation
 ;; (load-file (let ((coding-system-for-read 'utf-8))
 ;;                 (shell-command-to-string "agda-mode locate")))
 (autoload 'forward-whitespace "thingatpt" nil t)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
