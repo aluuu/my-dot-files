@@ -186,6 +186,10 @@ of FILE in the current directory, suitable for creation
  '(whitespace-space ((t (:foreground "#444444" :background "#1d1f21")))))
 
 
+(if (eq system-type 'darwin)
+    (custom-set-faces '(default ((t (:height 120)))))
+    (custom-set-faces '(default ((t (:height 98))))))
+
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
