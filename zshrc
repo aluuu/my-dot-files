@@ -28,8 +28,11 @@ if [[ -d $HOME/ec2/bin ]]; then
 fi
 
 # check if rbenv is installed
-if [[ -d $HOME/.rbenv/ && -x `which rbenv` ]]; then
-   eval "$(rbenv init -)"
+if [[ -d $HOME/.rbenv/bin ]]; then
+   export PATH="$HOME/.rbenv/bin/:$PATH"
+   if [[ -x `which rbenv` ]]; then
+      eval "$(rbenv init -)"
+   fi
 fi
 
 # ruby-related aliases
