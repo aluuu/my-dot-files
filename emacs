@@ -88,7 +88,7 @@ of FILE in the current directory, suitable for creation
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (display-time-mode 1)
-(global-whitespace-mode)
+; (global-whitespace-mode)
 (paredit-mode 1)
 (multi-web-global-mode 1)
 (epa-file-enable)
@@ -145,6 +145,7 @@ of FILE in the current directory, suitable for creation
      (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
      (css-mode "<style +type=\"text/css\"[^>]*>" "</style>"))))
  '(ns-function-modifier (quote none))
+ '(reb-re-syntax (quote string))
  '(show-paren-mode t)
  '(slime-repl-history-size 1000)
  '(tool-bar-mode nil)
@@ -181,9 +182,7 @@ of FILE in the current directory, suitable for creation
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:slant normal :weight normal :height 120 :width normal :foundry "nil" :family "PT Mono"))))
- '(whitespace-newline ((t (:foreground "#444444" :background "#1d1f21"))))
- '(whitespace-space ((t (:foreground "#444444" :background "#1d1f21")))))
+ '(default ((t (:slant normal :weight normal :height 120 :width normal :foundry "nil" :family "PT Mono")))))
 
 
 (if (eq system-type 'darwin)
@@ -245,9 +244,3 @@ of FILE in the current directory, suitable for creation
 ;; (load-file (let ((coding-system-for-read 'utf-8))
 ;;                 (shell-command-to-string "agda-mode locate")))
 (autoload 'forward-whitespace "thingatpt" nil t)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
