@@ -20,15 +20,28 @@
             (add-hook hook mode))
           hooks))
 
-(defun aluuu/ocaml-run-tests ()
-  ;; TODO: copy user's environment before `make` execution.
-  ;;       maybe, this action should be made not only for this function,
-  ;;       but for `emacs` process in general
-  (let ((closest-makefile (get-closest-pathname)))
-    (set (make-local-variable 'compile-command)
-         (format "make -f %s test -C %s"
-                 closest-makefile
-                 (file-name-directory closest-makefile)))))
+(defun aluuu/ocaml-setup ()
+  (let* ((share-path (shell-command-to-string "opam config var share 2> /dev/null"))
+         (share-path-exists (car (file-attributes share-path))))
+    (setq opam-share (substring share-path 0 -1))
+    (add-to-list 'load-path (concat opam-share "/emacs/site-lisp"))
+    (require 'merlin)
+    (require 'ocp-indent)
+
+    (add-hook 'tuareg-mode-hook 'merlin-mode t)
+    (add-hook 'caml-mode-hook 'merlin-mode t)
+    (setq merlin-use-auto-complete-mode 'easy)
+    (setq merlin-command 'opam))
+
+  (defun aluuu/ocaml-run-tests ()
+    ;; TODO: copy user's environment before `make` execution.
+    ;;       maybe, this action should be made not only for this function,
+    ;;       but for `emacs` process in general
+    (let ((closest-makefile (get-closest-pathname)))
+      (set (make-local-variable 'compile-command)
+           (format "make -f %s test -C %s"
+                   closest-makefile
+                   (file-name-directory closest-makefile))))))
 
 (defun aluuu/untabify ()
   (interactive)
