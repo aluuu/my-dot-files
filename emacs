@@ -66,7 +66,8 @@
   'tuareg
   'emmet-mode
   'jsx-mode
-  'markdown-mode))
+  'markdown-mode
+  'company))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -241,7 +242,9 @@ of FILE in the current directory, suitable for creation
 (add-hook 'ibuffer-mode-hook
           (lambda ()
             (ibuffer-switch-to-saved-filter-groups "default")))
+(aluuu/ocaml-setup)
 (add-hook 'tuareg-mode-hook 'aluuu/ocaml-run-tests)
+(add-hook 'after-init-hook 'global-company-mode)
 
 (setq org-publish-project-alist
       '(("notes"
