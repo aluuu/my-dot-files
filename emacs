@@ -21,9 +21,10 @@
           hooks))
 
 (defun aluuu/ocaml-setup ()
-  (let* ((share-path (shell-command-to-string "opam config var share 2> /dev/null"))
+  (interactive)
+  (let* ((share-path (shell-command-to-string "opam config var share 2> /dev/null | tr -d '\012'"))
          (share-path-exists (car (file-attributes share-path)))
-         (bin-path (shell-command-to-string "opam config var bin 2> /dev/null"))
+         (bin-path (shell-command-to-string "opam config var bin 2> /dev/null | tr -d '\012'"))
          (bin-path-exists (car (file-attributes bin-path))))
     (when (and bin-path-exists share-path-exists)
       (let ((share-path (substring share-path 0 -1))
