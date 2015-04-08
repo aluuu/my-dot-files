@@ -12,27 +12,24 @@ fi
 
 # check if cabal is installed
 if [[ -d $HOME/.cabal/bin ]]; then
-   export PATH="$HOME/.cabal/bin:$PATH"
+    export PATH="$HOME/.cabal/bin:$PATH"
 fi
 
 # check if Android SDK is installed
 if [[ -d $HOME/android-sdk ]]; then
-   export PATH="$HOME/android-sdk/tools:$PATH"
+    export PATH="$HOME/android-sdk/tools:$PATH"
 fi
 
 # check if EC2 API tools are installed
 if [[ -d $HOME/ec2/bin ]]; then
-   export EC2_HOME=$HOME/ec2
-   export PATH="$EC2_HOME/bin:$PATH"
-   export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre/ # TODO: remove hardcoded jre path
+    export EC2_HOME=$HOME/ec2
+    export PATH="$EC2_HOME/bin:$PATH"
+    export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64/jre/ # TODO: remove hardcoded jre path
 fi
 
 # check if rbenv is installed
-if [[ -d $HOME/.rbenv/bin ]]; then
-   export PATH="$HOME/.rbenv/bin/:$PATH"
-   if [[ -x `which rbenv` ]]; then
-      eval "$(rbenv init -)"
-   fi
+if which rbenv > /dev/null 2>&1; then
+    eval "$(rbenv init -)"
 fi
 
 # ansible aliases
