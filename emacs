@@ -58,7 +58,6 @@
  (list
   'compile
   'uniquify
-  'multi-web-mode
   'paredit
   'clojure-mode
   'haskell-mode
@@ -74,7 +73,10 @@
   'emmet-mode
   'jsx-mode
   'markdown-mode
-  'company))
+  'company
+  'slim-mode
+  'sass-mode
+  'web-mode))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -111,7 +113,6 @@ of FILE in the current directory, suitable for creation
 (display-time-mode 1)
 ; (global-whitespace-mode)
 (paredit-mode 1)
-(multi-web-global-mode 1)
 (epa-file-enable)
 
 ;; NOTE:
@@ -156,7 +157,7 @@ of FILE in the current directory, suitable for creation
  '(ido-everywhere t)
  '(indent-tabs-mode nil)
  '(inferior-lisp-program "sbcl")
- '(multi-web-global-mode t nil (multi-web-mode))
+ '(js-indent-level 2)
  '(mweb-default-major-mode (quote html-mode))
  '(mweb-filename-extensions (quote ("php" "htm" "html" "ctp" "phtml" "php4" "php5")))
  '(mweb-tags
@@ -166,6 +167,7 @@ of FILE in the current directory, suitable for creation
      (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
      (css-mode "<style +type=\"text/css\"[^>]*>" "</style>"))))
  '(ns-function-modifier (quote none))
+ '(ocp-indent-path (concat bin-path "/ocp-indent"))
  '(reb-re-syntax (quote string))
  '(show-paren-mode t)
  '(slime-repl-history-size 1000)
@@ -193,6 +195,8 @@ of FILE in the current directory, suitable for creation
      (340 . "#eab700")
      (360 . "#718c00"))))
  '(vc-annotate-very-old-color nil)
+ '(web-mode-code-indent-offset 2)
+ '(web-mode-markup-indent-offset 2)
  '(whitespace-style
    (quote
     (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark newline-mark))))
@@ -224,6 +228,7 @@ of FILE in the current directory, suitable for creation
                ("css" (or (name . "\\.css\\'")
                           (mode . css-mode)))
                ("js" (or (name . "\\.js\\'")
+                         (name . "\\.jsx\\'")
                          (mode . js2-mode)
                          (mode . js-mode)))
                ("ocaml" (or (name . "\\.ml\\'")
@@ -267,3 +272,10 @@ of FILE in the current directory, suitable for creation
 ;; (load-file (let ((coding-system-for-read 'utf-8))
 ;;                 (shell-command-to-string "agda-mode locate")))
 (autoload 'forward-whitespace "thingatpt" nil t)
+
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(defadvice web-mode-highlight-part (around tweak-jsx activate)
+  (if (equal web-mode-content-type "jsx")
+      (let ((web-mode-enable-part-face nil))
+        ad-do-it)
+    ad-do-it))
