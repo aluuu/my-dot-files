@@ -32,6 +32,11 @@ if which rbenv > /dev/null 2>&1; then
     eval "$(rbenv init -)"
 fi
 
+# check if eclipse is installed
+if [[ -d /opt/eclipse ]]; then
+   export PATH="/opt/eclipse:$PATH"
+fi
+
 # ansible aliases
 alias ave='ansible-vault edit --vault-password-file .vault_pass'
 alias avv='ansible-vault view --vault-password-file .vault_pass'
