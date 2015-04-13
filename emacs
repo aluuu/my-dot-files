@@ -22,6 +22,8 @@
 
 (defun aluuu/ocaml-setup ()
   (interactive)
+  (dolist (var (car (read-from-string (shell-command-to-string "opam config env --sexp"))))
+    (setenv (car var) (cadr var)))
   (let* ((share-path (shell-command-to-string "opam config var share 2> /dev/null | tr -d '\012'"))
          (share-path-exists (car (file-attributes share-path)))
          (bin-path (shell-command-to-string "opam config var bin 2> /dev/null | tr -d '\012'"))
@@ -32,6 +34,7 @@
       (add-to-list 'load-path (concat share-path "/emacs/site-lisp"))
       (require 'merlin)
       (require 'ocp-indent)
+      (autoload 'utop "utop" "Toplevel for OCaml" t)
 
       (add-hook 'tuareg-mode-hook 'merlin-mode t)
       (add-hook 'caml-mode-hook 'merlin-mode t)
