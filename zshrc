@@ -43,7 +43,11 @@ alias avv='ansible-vault view --vault-password-file .vault_pass'
 alias ec=emacsclient
 
 export PATH="$HOME/.bin:$PATH"
+
 if [[ `uname` == "Darwin" ]]; then
     export PATH="/usr/local/sbin:$PATH"
+    export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
+
 export EDITOR=emacsclient
