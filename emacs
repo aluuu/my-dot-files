@@ -174,6 +174,7 @@ of FILE in the current directory, suitable for creation
  '(reb-re-syntax (quote string))
  '(show-paren-mode t)
  '(slime-repl-history-size 1000)
+ '(sql-postgres-program "/usr/local/bin/psql")
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
  '(vc-annotate-background nil)
@@ -277,6 +278,7 @@ of FILE in the current directory, suitable for creation
 (autoload 'forward-whitespace "thingatpt" nil t)
 
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("group_vars\\/all$" . yaml-mode))
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
   (if (equal web-mode-content-type "jsx")
       (let ((web-mode-enable-part-face nil))
