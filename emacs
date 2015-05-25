@@ -284,3 +284,5 @@ of FILE in the current directory, suitable for creation
       (let ((web-mode-enable-part-face nil))
         ad-do-it)
     ad-do-it))
+
+(setq magit-last-seen-setup-instructions "1.4.0")
