@@ -79,7 +79,8 @@
   'company
   'slim-mode
   'sass-mode
-  'web-mode))
+  'web-mode
+  'elm-mode))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -261,6 +262,7 @@ of FILE in the current directory, suitable for creation
 (aluuu/ocaml-setup)
 (add-hook 'tuareg-mode-hook 'aluuu/ocaml-run-tests)
 (add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'elm-mode-hook 'turn-on-elm-indentation)
 
 (setq org-publish-project-alist
       '(("notes"
