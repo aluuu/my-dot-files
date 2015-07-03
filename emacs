@@ -144,18 +144,22 @@ of FILE in the current directory, suitable for creation
  '(backup-directory-alist (quote ((".*" . "~/tmp/emacs"))))
  '(before-save-hook (quote (delete-trailing-whitespace aluuu/untabify)))
  '(blink-cursor-mode nil)
+ '(case-fold-search nil)
  '(column-number-mode t)
  '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
  '(custom-safe-themes
    (quote
     ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default)))
+ '(dabbrev-case-fold-search nil)
+ '(dabbrev-upcase-means-case-search t)
  '(display-time-default-load-average nil)
  '(display-time-format "%H:%M %d.%m.%Y")
  '(display-time-mode t)
+ '(elm-indent-offset 2)
  '(exec-path (cons "/home/aluuu/.cabal/bin" exec-path))
  '(fci-rule-color "#efefef")
  '(haskell-font-lock-symbols (quote unicode))
- '(haskell-mode-hook (quote (turn-on-haskell-indent turn-on-font-lock)))
+ '(haskell-mode-hook (quote (turn-on-haskell-indent turn-on-font-lock)) t)
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
  '(ido-everywhere t)
@@ -262,7 +266,6 @@ of FILE in the current directory, suitable for creation
 (aluuu/ocaml-setup)
 (add-hook 'tuareg-mode-hook 'aluuu/ocaml-run-tests)
 (add-hook 'after-init-hook 'global-company-mode)
-(add-hook 'elm-mode-hook 'turn-on-elm-indentation)
 
 (setq org-publish-project-alist
       '(("notes"
@@ -288,3 +291,19 @@ of FILE in the current directory, suitable for creation
     ad-do-it))
 
 (setq magit-last-seen-setup-instructions "1.4.0")
+
+
+(add-hook 'typescript-mode-hook
+          (lambda ()
+            (tide-setup)
+            (flycheck-mode t)
+            (setq flycheck-check-syntax-automatically '(save mode-enabled))
+            (eldoc-mode t)
+            ;; company is an optional dependency. You have to
+            ;; install it separately via package-install
+            (company-mode-on)))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+(setq tide-project-root "/Users/aluuu/workspace/itowl/alternatus/vendor/admin_frontend")
