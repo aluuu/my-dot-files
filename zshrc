@@ -40,12 +40,15 @@ fi
 # ansible aliases
 alias ave='ansible-vault edit --vault-password-file .vault_pass'
 alias avv='ansible-vault view --vault-password-file .vault_pass'
+alias gdc="git diff --cached"
 alias ec=emacsclient
 
 export PATH="$HOME/.bin:$PATH"
 export PATH=".cabal-sandbox/bin:$PATH"
+export PATH="bin:$PATH"
 
 if [[ `uname` == "Darwin" ]]; then
+    export PATH="/usr/local/bin:$PATH"
     export PATH="/usr/local/sbin:$PATH"
     export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
     export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
