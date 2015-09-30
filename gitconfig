@@ -12,3 +12,5 @@
         ci = commit
         st = status
         glog = log --graph
+[commit]
+        template = ~/.gitmessage
