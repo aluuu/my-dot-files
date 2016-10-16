@@ -33,15 +33,16 @@
             (bin-path (substring bin-path 0 -1))))
       (add-to-list 'load-path (concat share-path "/emacs/site-lisp"))
       (require 'merlin)
+      (require 'utop)
       (require 'ocp-indent)
       (autoload 'utop "utop" "Toplevel for OCaml" t)
 
       (add-hook 'tuareg-mode-hook 'merlin-mode t)
       (add-hook 'caml-mode-hook 'merlin-mode t)
-      (setq merlin-use-auto-complete-mode 'easy)
-      (setq merlin-command 'opam)
+      (setq merlin-command (concat bin-path "/ocamlmerlin"))
       (custom-set-variables
-       '(ocp-indent-path (concat bin-path "/ocp-indent")))))
+       '(ocp-indent-path (concat bin-path "/ocp-indent")))
+      (setq utop-command "opam config exec -- utop -emacs")))
 
   (defun aluuu/ocaml-run-tests ()
     ;; TODO: copy user's environment before `make` execution.
@@ -59,14 +60,14 @@
 
 (aluuu/check-packages
  (list
+  'ergoemacs-mode
+  'exec-path-from-shell
   'compile
   'uniquify
   'paredit
   'clojure-mode
   'haskell-mode
   'color-theme
-  'color-theme-sanityinc-solarized
-  'color-theme-sanityinc-tomorrow
   'yaml-mode
   'smex
   'js2-mode
@@ -77,10 +78,15 @@
   'jsx-mode
   'markdown-mode
   'company
+  'rubocop
+  'flycheck
   'slim-mode
   'sass-mode
   'web-mode
-  'elm-mode))
+  'elm-mode
+  'ensime
+  'etags-table
+  'org-journal))
 
 (aluuu/mode-for-hooks
  #'enable-paredit-mode
@@ -91,6 +97,10 @@
    lisp-interaction-mode-hook
    scheme-mode-hook
    clojure-mode-hook))
+
+(aluuu/mode-for-hooks
+ #'flycheck-mode
+ '(ruby-mode-hook))
 
 (defun* get-closest-pathname (&optional (file "Makefile"))
   "Determine the pathname of the first instance of FILE starting from the current directory towards root.
@@ -107,6 +117,7 @@ of FILE in the current directory, suitable for creation
       if (equal d root)
       return nil))))
 
+(exec-path-from-shell-initialize)
 (blink-cursor-mode 0)
 (setq initial-scratch-message "")
 (setq inhibit-startup-message t)
@@ -118,7 +129,9 @@ of FILE in the current directory, suitable for creation
 ; (global-whitespace-mode)
 (paredit-mode 1)
 (epa-file-enable)
-
+(setq ergoemacs-theme nil) ;; Uses Standard Ergoemacs keyboard theme
+(setq ergoemacs-keyboard-layout "us") ;; Assumes QWERTY keyboard layout
+(ergoemacs-mode 1)
 ;; NOTE:
 ;; MacOS hint - if your emacscleint can't find any emacs
 ;; server running do the following:
@@ -126,20 +139,11 @@ of FILE in the current directory, suitable for creation
 ;; $ sudo ln -s /Applications/Emacs.app/Contents/MacOS/bin/emacsclient /usr/bin/emacsclient
 (server-mode)
 
-(ido-mode 1)
-(global-set-key (kbd "C-s-SPC") 'aluuu/mode-line-in-header)
-(global-set-key (kbd "C-x b") 'ibuffer)
-(global-set-key (kbd "M-x") 'smex)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector
-   (vector "#eaeaea" "#d54e53" "#b9ca4a" "#e7c547" "#7aa6da" "#c397d8" "#70c0b1" "#000000"))
  '(auto-save-file-name-transforms (quote ((".*" "/tmp/emacs\\1" t))))
  '(backup-directory-alist (quote ((".*" . "~/tmp/emacs"))))
  '(before-save-hook (quote (delete-trailing-whitespace aluuu/untabify)))
@@ -147,23 +151,24 @@ of FILE in the current directory, suitable for creation
  '(case-fold-search nil)
  '(column-number-mode t)
  '(cursor-type (quote bar))
- '(custom-enabled-themes (quote (sanityinc-tomorrow-day)))
- '(custom-safe-themes
-   (quote
-    ("bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "4aee8551b53a43a883cb0b7f3255d6859d766b6c5e14bcb01bed572fcbef4328" default)))
  '(dabbrev-case-fold-search nil)
  '(dabbrev-upcase-means-case-search t)
  '(display-time-default-load-average nil)
  '(display-time-format "%H:%M %d.%m.%Y")
  '(display-time-mode t)
  '(elm-indent-offset 2)
- '(exec-path (cons "/usr/local/bin" (cons "/home/aluuu/.cabal/bin" exec-path)))
- '(fci-rule-color "#efefef")
+ '(exec-path
+   (cons "/usr/local/bin"
+         (cons "~/.cabal/bin"
+               (cons "~/.opam/system/bin" exec-path))))
+ '(flycheck-elm-main-file nil)
+ '(global-undo-tree-mode nil)
  '(haskell-font-lock-symbols (quote unicode))
- '(haskell-mode-hook (quote (turn-on-haskell-indent turn-on-font-lock)) t)
+ '(haskell-mode-hook (quote (turn-on-haskell-indent turn-on-font-lock)))
  '(ido-create-new-buffer (quote always))
  '(ido-enable-flex-matching t)
  '(ido-everywhere t)
+ '(ido-use-faces t)
  '(indent-tabs-mode nil)
  '(inferior-lisp-program "sbcl")
  '(js-indent-level 2)
@@ -177,34 +182,16 @@ of FILE in the current directory, suitable for creation
      (css-mode "<style +type=\"text/css\"[^>]*>" "</style>"))))
  '(ns-function-modifier (quote none))
  '(ocp-indent-path (concat bin-path "/ocp-indent"))
+ '(org-journal-date-format "%A, %Y-%m-%d")
+ '(org-journal-dir "~/workspace/personal/journal/")
+ '(org-journal-enable-encryption nil)
+ '(org-journal-file-format "%Y%m%d.org")
  '(reb-re-syntax (quote string))
  '(show-paren-mode t)
  '(slime-repl-history-size 1000)
  '(sql-postgres-program "/usr/local/bin/psql")
  '(tool-bar-mode nil)
  '(uniquify-buffer-name-style (quote forward) nil (uniquify))
- '(vc-annotate-background nil)
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#c82829")
-     (40 . "#f5871f")
-     (60 . "#eab700")
-     (80 . "#718c00")
-     (100 . "#3e999f")
-     (120 . "#4271ae")
-     (140 . "#8959a8")
-     (160 . "#c82829")
-     (180 . "#f5871f")
-     (200 . "#eab700")
-     (220 . "#718c00")
-     (240 . "#3e999f")
-     (260 . "#4271ae")
-     (280 . "#8959a8")
-     (300 . "#c82829")
-     (320 . "#f5871f")
-     (340 . "#eab700")
-     (360 . "#718c00"))))
- '(vc-annotate-very-old-color nil)
  '(web-mode-code-indent-offset 2)
  '(web-mode-markup-indent-offset 2)
  '(whitespace-style
@@ -217,15 +204,13 @@ of FILE in the current directory, suitable for creation
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#ffffff" :foreground "#4d4d4c" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 130 :width normal :foundry "nil" :family "PT Mono"))))
- '(cursor ((t (:background "#c82829"))))
- '(vertical-border ((t (:background "black" :distant-foreground "black" :foreground "#efefef"))))
+ '(default ((t (:height 130))))
  '(window-divider ((t (:foreground "dark gray")))))
 
 
 (if (eq system-type 'darwin)
     (custom-set-faces '(default ((t (:height 130)))))
-    (custom-set-faces '(default ((t (:height 98))))))
+  (custom-set-faces '(default ((t (:height 98))))))
 
 (add-to-list 'auto-mode-alist '("emacs\\'" . emacs-lisp-mode))
 
@@ -240,6 +225,7 @@ of FILE in the current directory, suitable for creation
                ("dired" (mode . dired-mode))
                ("elm" (or (name . "\\.elm\\'")
                           (mode . elm-mode)))
+               ("elixir" (name . "\\.ex\\'"))
                ("css" (or (name . "\\.css\\'")
                           (mode . css-mode)))
                ("js" (or (name . "\\.js\\'")
@@ -247,19 +233,20 @@ of FILE in the current directory, suitable for creation
                          (mode . js2-mode)
                          (mode . js-mode)))
                ("ocaml" (or (name . "\\.ml\\'")
+                            (name . "\\.mli\\'")
                             (name . "_oasis\\'")))
                ("ruby" (or (name . "\\.rb\\'")
                            (name . "Gemfile\\'")
                            (name . "config.ru\\'")))
-               ("ocaml interface" (name . "\\.mli\\'"))
                ("make" (or (mode . makefile-gmake-mode)
                            (mode . makefile-mode)))
                ("yaml" (mode . yaml-mode))
-               ;; ("agda" (mode . agda2-mode))
                ("python" (mode . python-mode))
                ("git" (or (mode . magit-mode)
                           (name . "^\\*magit")))
                ("org" (mode . org-mode))
+               ("markdown" (mode . markdown-mode))
+               ("haskell" (mode . haskell-mode))
                ("emacs" (or
                          (name . "emacs\\'")
                          (name . "\\.emacs\\'")
@@ -272,25 +259,14 @@ of FILE in the current directory, suitable for creation
 (aluuu/ocaml-setup)
 (add-hook 'tuareg-mode-hook 'aluuu/ocaml-run-tests)
 (add-hook 'after-init-hook 'global-company-mode)
-(add-hook 'elm-mode-hook 'elm-oracle-setup-completion)
+;; (add-hook 'elm-mode-hook 'elm-oracle-setup-completion)
 
-(setq org-publish-project-alist
-      '(("notes"
-         :base-directory "~/notes/"
-         :publishing-directory "~/notes/build"
-         :section-numbers nil
-         :table-of-contents nil
-         :style "<link rel=\"stylesheet\"
-                     href=\"style.css\"
-                     type=\"text/css\"/>")))
-
-;; Agda support
-;; (load-file (let ((coding-system-for-read 'utf-8))
-;;                 (shell-command-to-string "agda-mode locate")))
 (autoload 'forward-whitespace "thingatpt" nil t)
 
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 (add-to-list 'auto-mode-alist '("group_vars\\/all$" . yaml-mode))
+(setq inferior-octave-prompt ">> ")
 (defadvice web-mode-highlight-part (around tweak-jsx activate)
   (if (equal web-mode-content-type "jsx")
       (let ((web-mode-enable-part-face nil))
@@ -298,21 +274,87 @@ of FILE in the current directory, suitable for creation
     ad-do-it))
 
 (setq magit-last-seen-setup-instructions "1.4.0")
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'inferior-octave-mode-hook
+          (lambda ()
+            (turn-on-font-lock)
+            (define-key inferior-octave-mode-map [up]
+              'comint-previous-input)
+            (define-key inferior-octave-mode-map [down]
+              'comint-next-input)))
+(add-hook 'octave-mode-hook
+          (lambda ()
+            (abbrev-mode 1)
+            (auto-fill-mode 1)
+            (if (eq window-system 'x)
+                (font-lock-mode 1))))
+
+;; (add-to-list 'company-backends 'company-elm)
+(setq elm-format-on-save t)
+
+(add-hook 'elm-mode-hook (lambda ()
+                           (setq default-directory (elm--find-dependency-file-path))))
 
 (eval-after-load 'flycheck
   '(add-hook 'flycheck-mode-hook #'flycheck-elm-setup))
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'typescript-mode-hook
-          (lambda ()
-            (tide-setup)
-            (flycheck-mode t)
-            (setq flycheck-check-syntax-automatically '(save mode-enabled))
-            (eldoc-mode t)
-            ;; company is an optional dependency. You have to
-            ;; install it separately via package-install
-            (company-mode-on)))
 
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
 
-(setq tide-project-root "/Users/aluuu/workspace/itowl/alternatus/vendor/admin_frontend")
+(when (window-system)
+  (set-default-font "Fira Code"))
+(let ((alist '((33 . ".\\(?:\\(?:==\\)\\|[!=]\\)")
+               (35 . ".\\(?:[(?[_{]\\)")
+               (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+               (42 . ".\\(?:\\(?:\\*\\*\\)\\|[*/]\\)")
+               (43 . ".\\(?:\\(?:\\+\\+\\)\\|\\+\\)")
+               (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+               (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=]\\)")
+               (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+               (58 . ".\\(?:[:=]\\)")
+               (59 . ".\\(?:;\\)")
+               (60 . ".\\(?:\\(?:!--\\)\\|\\(?:\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[/<=>|-]\\)")
+               (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+               (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+               (63 . ".\\(?:[:=?]\\)")
+               (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+               (94 . ".\\(?:=\\)")
+               (123 . ".\\(?:-\\)")
+               (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+               (126 . ".\\(?:[=@~-]\\)")
+               )
+             ))
+  (dolist (char-regexp alist)
+    (set-char-table-range composition-function-table (car char-regexp)
+                          `([,(cdr char-regexp) 0 font-shape-gstring]))))
+
+
+(require 'ox-publish)
+(setq org-publish-project-alist
+      '(
+        ("notes"
+         :base-directory "~/workspace/notes/"
+         :base-extension "org"
+         :publishing-directory "~/workspace/notes_html/"
+         :recursive t
+         :publishing-function org-html-publish-to-html
+         :headline-levels 4             ; Just the default for this project.
+         :auto-preamble t
+         )
+        ))
+
+(autoload 'merlin-mode "merlin" "Merlin mode" t)
+(add-hook 'tuareg-mode-hook 'merlin-mode)
+(add-hook 'caml-mode-hook 'merlin-mode)
+(require 'flx-ido)
+(ido-mode 1)
+(ido-everywhere 1)
+(flx-ido-mode 1)
+
+(set-register ?a '(file . "~/workspace/notes/work/alternatus.org"))
+
+(ido-mode 1)
+(global-set-key (kbd "C-s-SPC") 'aluuu/mode-line-in-header)
+(global-set-key (kbd "C-x b") 'ibuffer)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "<f8>") 'call-last-kbd-macro)
+(define-key org-mode-map (kbd "C-c C-x d") nil)
+(define-key org-mode-map (kbd "C-c C-x d") 'org-decrypt-entry)
